@@ -1,0 +1,294 @@
+<xmodel version="2">
+ <name>Pandemic_module</name>
+ <version>1.0</version>
+ <description>Author: Sander van der Hoog, Date: 08.04.2020</description>
+ <models/>
+ <environment>
+  <constants>
+   <variable>
+    <type>int</type>
+    <name>const_switch_pandemic_module</name>
+   <description>Switch for the pandemic module [0,1].</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_pandemic_exposure_rate_persistent</name>
+    <description>Constant probability (daily) that a household is exposed during the persistent pandemic [0.0,1.0].</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_pandemic_infection_rate_persistent</name>
+    <description>Constant probability (daily) that a household is infected during the persistent pandemic [0.0,1.0].</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_pandemic_case_mortality_rate_persistent</name>
+    <description>Constant probability (daily) that a household is removed during the persistent pandemic [0.0,1.0].</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_pandemic_exposure_rate_single_event</name>
+    <description>Constant probability (once) that a household is exposed during the one-off pandemic [0.0,1.0].</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_pandemic_infection_rate_single_event</name>
+    <description>Constant probability (once) that a household is infected during the one-off pandemic [0.0,1.0].</description>
+   </variable>
+   <variable>
+    <type>double</type>
+    <name>const_pandemic_case_mortality_rate_single_event</name>
+    <description>Constant probability (once) that a household is removed during the one-off pandemic [0.0,1.0].</description>
+   </variable>
+  </constants>
+  <functionFiles>
+   <file>Household_Pandemic_Functions.c</file>
+   <file>Eurostat_Pandemic_Functions.c</file>
+  </functionFiles>
+  <timeUnits/>
+  <dataTypes/>
+  <timeUnits/>
+  <dataTypes/>
+ </environment>
+ <agents>
+  <xagent>
+   <name>Household</name>
+   <description></description>
+   <memory>
+    <variable>
+      <type>int</type>
+      <name>switch_pandemic_module</name>
+      <description>Switch for the pandemic module [0,1].</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>susceptible</name>
+      <description>State susceptible.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>exposed</name>
+      <description>State exposed.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>infected</name>
+      <description>State infected.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>removed</name>
+      <description>State removed.</description>
+     </variable>
+   </memory>
+   <functions>
+    <function>
+     <name>idle</name>
+     <description>Idle function to connect Init stage with Pandemic module.</description>
+     <currentState>Household_init_after_transient</currentState>
+     <nextState>Household_Start_Pandemic_Module</nextState>
+      <condition>
+        <lhs>
+          <value>a.switch_pandemic_module</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+          <value>1</value>
+        </rhs>
+      </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle function to side-track the Pandemic module.</description>
+     <currentState>Household_init_after_transient</currentState>
+     <nextState>Household_End_Pandemic_Module</nextState>
+      <condition>
+       <not>
+        <lhs>
+          <value>a.switch_pandemic_module</value>
+        </lhs>
+        <op>EQ</op>
+        <rhs>
+          <value>1</value>
+        </rhs>
+       </not>
+      </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+
+    <function>
+     <name>idle</name>
+     <description>Idle function for not activating pandemic module.</description>
+     <currentState>Household_Start_Pandemic_Module</currentState>
+     <nextState>Household_End_Pandemic_Module</nextState>
+     <condition>
+      <not>
+        <lhs>
+          <value>iteration_loop</value>
+        </lhs>
+        <op>GT</op>
+        <rhs>
+          <value>a.transition_phase_pandemic</value>
+        </rhs>
+      </not>      
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+
+    <function>
+     <name>Household_pandemic_persistent</name>
+     <description>Household decease during the persistent pandemic.</description>
+     <currentState>Household_Start_Pandemic_Module</currentState>
+     <nextState>Household_End_Pandemic_Module</nextState>
+     <condition>
+      <lhs>
+        <value>iteration_loop</value>
+      </lhs>
+      <op>GT</op>
+      <rhs>
+        <value>a.transition_phase_pandemic</value>
+      </rhs>
+     </condition>
+     <inputs/>
+     <outputs>
+      <output>
+       <messageName>hh_health_data</messageName>
+      </output>
+     </outputs>
+    </function>
+   </functions>
+  </xagent>
+
+  <xagent>
+   <name>Eurostat</name>
+   <description></description>
+   <memory>
+     <variable>
+      <type>int</type>
+      <name>switch_pandemic_module</name>
+      <description>Switch for the pandemic module [0,1].</description>
+     </variable>
+
+     <variable>
+      <type>int</type>
+      <name>sum_susceptible</name>
+      <description>State susceptible {0,1}.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>sum_exposed</name>
+      <description>State exposed {0,1}.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>sum_infected</name>
+      <description>State infected {0,1}.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>sum_removed</name>
+      <description>State removed {0,1}.</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>ratio_susceptible</name>
+      <description>State susceptible {0,1}.</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>ratio_exposed</name>
+      <description>State exposed {0,1}.</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>ratio_infected</name>
+      <description>State infected {0,1}.</description>
+     </variable>
+     <variable>
+      <type>double</type>
+      <name>ratio_removed</name>
+      <description>State removed {0,1}.</description>
+     </variable>
+   </memory>
+   <functions>
+    <function>
+     <name>Eurostat_health_data_aggregation</name>
+     <description>Health data collection function for Eurostat.</description>
+     <currentState>Eurostat_Start_Pandemic_Module</currentState>
+     <nextState>Eurostat_End_Pandemic_Module</nextState>
+     <condition>
+      <lhs>
+        <value>iteration_loop</value>
+      </lhs>
+      <op>GT</op>
+      <rhs>
+        <value>a.transition_phase_pandemic</value>
+      </rhs>
+     </condition>
+     <inputs>
+      <input>
+       <messageName>hh_health_data</messageName>
+      </input>
+     </inputs>
+     <outputs/>
+    </function>
+    <function>
+     <name>idle</name>
+     <description>Idle for health data collection of Eurostat.</description>
+     <currentState>Eurostat_Start_Pandemic_Module</currentState>
+     <nextState>Eurostat_End_Pandemic_Module</nextState>
+     <condition>
+      <not>
+        <lhs>
+          <value>iteration_loop</value>
+        </lhs>
+        <op>GT</op>
+        <rhs>
+          <value>a.transition_phase_pandemic</value>
+        </rhs>
+      </not>      
+     </condition>
+     <inputs/>
+     <outputs/>
+    </function>
+   </functions>
+  </xagent>
+ </agents>
+ <messages>
+  <message>
+   <name>hh_health_data</name>
+   <description>Message sent by firms to Eurostat. Includes micro data.</description>
+   <variables>
+    <variable>
+     <type>int</type>
+     <name>household_id</name>
+     <description></description>
+    </variable>
+     <variable>
+      <type>int</type>
+      <name>susceptible</name>
+      <description>State susceptible {0,1}.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>exposed</name>
+      <description>State exposed {0,1}.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>infected</name>
+      <description>State infected {0,1}.</description>
+     </variable>
+     <variable>
+      <type>int</type>
+      <name>removed</name>
+      <description>State removed {0,1}.</description>
+     </variable>
+   </variables>
+  </message>
+ </messages>
+</xmodel>
