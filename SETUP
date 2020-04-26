@@ -7,7 +7,7 @@ git config --global user.email "Username@uni-bielefeld.de"
 
 Cloning an existing repository to a local folder:
 
-git clone https://gitlab.ub.uni-bielefeld.de:hoog/EURACE_at_ECB_IMF.git
+git clone https://github.com:FLAME-HPC/PANDEMACE.git
 
 
 Adding a README file:
@@ -22,7 +22,7 @@ Creating a new branch in a remote repository:
 mkdir new
 cd new
 git init
-git remote add origin git@gitlab.ub.uni-bielefeld.de:hoog/ABM_at_ECB.git
+git remote add origin git@github.com:FLAME-HPC/PANDEMACE.git
 git fetch origin master
 git checkout -b master
 #resolve mere conflicts by hand (use editor)
@@ -37,7 +37,7 @@ Pushing files to an existing Git repository:
 #go into folder
 cd existing_folder
 git init
-git remote add origin git@gitlab.ub.uni-bielefeld.de:hoog/ABM_at_ECB.git
+git remote add origin git@github.com:FLAME-HPC/PANDEMACE.git
 #fetch 
 git fetch origin [branch name]
 git checkout -b [branch name]
@@ -68,7 +68,7 @@ git checkout -B remotes/origin/[branch]
 
 # Edit the file .git/config
 [remote "origin"]
-        url = git@gitlab.ub.uni-bielefeld.de:hoog/ABM_at_ECB
+        url = git@github.com:FLAME-HPC/PANDEMACE.git
         fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "master"]
         remote = origin
@@ -80,6 +80,14 @@ git checkout -B remotes/origin/[branch]
 # Pull from remote
 git pull origin [branch]
 
+# List remote
+git remote -v 
+
+# Add upstream
+git remote add <name> <url>
+
+# For this repo
+git remote add upstream https://github.com/FLAME-HPC/PANDEMACE.git
 
 HOWTO USE GIT Large File Support
 =================================
@@ -105,4 +113,3 @@ HOWTO USE GIT Large File Support
 
 8. Pull
 # git pull
-
