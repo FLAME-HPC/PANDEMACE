@@ -353,11 +353,6 @@
    <memory>
      <variable>
       <type>int</type>
-      <name>transition_phase_policy</name>
-      <description>Transition phase for any policy. Default: 8000 (400 months).</description>
-     </variable>
-     <variable>
-      <type>int</type>
       <name>switch_macropru_policy</name>
       <description></description>
      </variable>

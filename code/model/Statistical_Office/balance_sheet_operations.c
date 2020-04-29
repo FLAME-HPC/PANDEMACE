@@ -734,15 +734,7 @@ int compute_mean_interest_rates_all_mortgages(void)
 	for(i=0; i<MORTGAGE_PORTFOLIO.size; i++)
 	{
 		//Using annualized interest
-		interest_rate_annual = pow(1+MORTGAGE_PORTFOLIO.array[i].monthly_interest, 12) - 1;
-
-/*		#ifdef _DEBUG_MODE        
-	    if (PRINT_DEBUG_MACROPRU)
-	    {
-			printf("\n\tIT %d ID %d interest_rate_annual: %f", DAY, ID, interest_rate_annual);
-	    }              
-	    #endif
-*/
+		interest_rate_annual = MORTGAGE_PORTFOLIO.array[i].interest_rate_annual;
 
 		SUM_INTEREST_RATES_ALL_MORTGAGES += interest_rate_annual;
 		
@@ -832,14 +824,6 @@ int compute_mean_interest_rates_all_firm_loans(void)
 	{
 		//Using annualized interest
 		interest_rate_annual = FIRM_LOAN_PORTFOLIO.array[i].interest_rate;
-
-/*		#ifdef _DEBUG_MODE        
-	    if (PRINT_DEBUG_MACROPRU)
-	    {
-			printf("\n\tIT %d ID %d interest_rate_annual: %f", DAY, ID, interest_rate_annual);
-	    }              
-	    #endif
-*/
 
 		SUM_INTEREST_RATES_ALL_FIRM_LOANS += interest_rate_annual;
 
