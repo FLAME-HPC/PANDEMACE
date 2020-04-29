@@ -4,13 +4,13 @@ This is the source code of the PANDEMACE model.
 
 **Version history:**
 
-1.0.0 (April 2020) Eurace@ECB-IMF Model
+1.0.0 (April 2020) Eurace@ECB+IMF Model forms the basis for the PANDEMACE model.
 
 **Dependencies**
 
 GCC 4.4 or higher (or other C compiler)
 
-GSL 2.4 or higher (GNU  Scientific  Library)
+GSL 2.4 or higher (GNU  Scientific  Library): required functionality: `gsl_ran_multivariate_gaussian()`
 
 FLAME XParser 0.17.1 (https://github.com/FLAME-HPC/xparser/archive/0.17.1.tar.gz)
 
@@ -102,11 +102,11 @@ Contributing
 
 How to cite
 --
-The Eurace@ECB-IMF Source Code is a Modified Version of the Eurace@Unibi Source Code (Standard Version, 2014).
+The PANDEMACE Source Code is a Modified Version of the Eurace@ECB+IMF Source Code (Version of 20 April, 2020).
 
-% Any publication that contains results derived from the Eurace@ECB-IMF Source Code must contain the following (or similar) acknowledgement:
+The Eurace@ECB+IMF Source Code is a Modified Version of the Eurace@Unibi Source Code (Standard Version, 2014).
 
-% BiBTeX:
+To comply with the license of the Eurace@Unibi Source Code:
 
 Any publication that contains results derived from the Eurace@Unibi Source Code must contain the following (or similar) acknowledgement:
 
